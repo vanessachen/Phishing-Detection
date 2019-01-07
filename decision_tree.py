@@ -1,5 +1,10 @@
+#using code from: https://github.com/npapernot/phishing-detection
+import re #regular expression
 from sklearn import tree
 from sklearn.metrics import accuracy_score
+
+#set global vars here, then return after calling the function (def run_model)
+
 
 import numpy as np
 
@@ -36,27 +41,55 @@ def load_data():
     # Return the four arrays
     return training_inputs, training_outputs, testing_inputs, testing_outputs
 
-
-if __name__ == '__main__':
-    print "Tutorial: Training a decision tree to detect phishing websites"
+def run_model():
+    print ("Tutorial: Training a decision tree to detect phishing websites")
 
     # Load the training data
     train_inputs, train_outputs, test_inputs, test_outputs = load_data()
-    print "Training data loaded."
+    print ("Training data loaded.")
 
     # Create a decision tree classifier model using scikit-learn
     classifier = tree.DecisionTreeClassifier()
-    print "Decision tree classifier created."
+    print ("Decision tree classifier created.")
 
-    print "Beginning model training."
+    print ("Beginning model training.")
     # Train the decision tree classifier
     classifier.fit(train_inputs, train_outputs)
-    print "Model training completed."
+    print ("Model training completed.")
 
     # Use the trained classifier to make predictions on the test data
     predictions = classifier.predict(test_inputs)
-    print "Predictions on testing data computed."
+    print ("Predictions on testing data computed.")
 
     # Print the accuracy (percentage of phishing websites correctly predicted)
     accuracy = 100.0 * accuracy_score(test_outputs, predictions)
-    print "The accuracy of your decision tree on testing data is: " + str(accuracy)
+    #print ("The accuracy of your decision tree on testing data is: ") + str(accuracy)
+    print ("The accuracy of your decision tree on testing data is: ", str(accuracy))
+
+    return classifier
+
+#NEW STUFF
+
+#note: -1 = not phishing, 1 = phishing
+def using_IP_Address(website):
+    #do regular exp
+    #character from 0-9, 1 to 3 of them, then dot, then repeat for a total of 4
+    #? means 1 or less of the character prior
+    match = re.search("https?:\/\/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})",website)
+    #search returns either none, or object (that contains groups)
+    return yes_IP
+
+
+def predict(website):
+    classifier = run_model()
+    #website = input("Please input a website you would like to test for phishing")
+    prediction = classifier.predict(website)
+    print (prediction)
+##########################################
+
+
+if __name__ == '__main__':
+
+    website = input("Please input a website you would like to test for phishing: ")
+    using_IP_Address(website)
+    #predict(website)
